@@ -9,6 +9,7 @@ namespace ConsoleApp26.CalcLibrary
     public class Calc
     {
         IDataProvider provider;
+        ISmsService service;
 
         public Calc()
         {
@@ -18,6 +19,11 @@ namespace ConsoleApp26.CalcLibrary
         public Calc(IDataProvider provider)
         {
             this.provider = provider;
+        }
+
+        public Calc(IDataProvider provider, ISmsService service) : this(provider)
+        {
+            this.service = service;
         }
 
         public int Sum(int x, int y)
@@ -49,6 +55,12 @@ namespace ConsoleApp26.CalcLibrary
                 {
                     counter++;
                 }
+            }
+
+            if (service != null)
+            {
+                string number = service.GetAdminNumber();
+                service.SendSms(counter + " empty lines", number);
             }
 
             return counter;
